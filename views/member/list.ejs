@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h2>Basic HTML Table</h2>
+      <table style="width:100%">
+        <%list.forEach(list => {%>
+           <tr>
+            <th><%=list.memberCategory%></th>
+            <th><%=list.memberId%></th>
+            <th><%=list.memberLogin%></th>
+            <th><%=list.memberPass%></th>
+            <th><%=list.memberName%></th>
+            <th><%=list.memberDate%></th>
+            <th><%=list.memberSex%></th>
+            <th><%=list.memberAddress%></th>
+            <th><%=list.memberClassId%></th>
+            <th>
+               <a href="/admin/member/delete/<%=list._id%>">Xoa</a>
+               <a href="/admin/member/<%=list._id%>">Update</a>
+               </th>
+         </tr>
+      <%  });%>
+      </table>
+   </body>
+</html>

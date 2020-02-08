@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h2>Basic HTML Table</h2>
+      <table style="width:100%">
+        <%list.forEach(list => {%>
+           <tr>
+            <th><%=list.examName%></th>
+            <th><%=list.examEasyNumber%></th>
+            <th><%=list.examMediumNumber%></th>
+            <th><%=list.examDifficultNumber%></th>
+            <th><%=list.examTimeMake%></th>
+            <th><%=list.classId%></th>
+            <th>
+               <a href="/admin/exam/delete/<%=list._id%>">Xoa</a>
+               <a href="/admin/exam/<%=list._id%>">Update</a>
+               </th>
+         </tr>
+      <%  });%>
+      </table>
+   </body>
+</html>

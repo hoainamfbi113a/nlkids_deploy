@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div style="margin-left: 600px">
+<h2>HTML Forms</h2>
+
+<form action="/employee" method="POST">
+  <input type="hidden" name="_id" value="<%=employee._id%>">
+  fullname<br>
+  <input type="text" name="fullname" value="<%=employee.fullname%>">
+  <br>
+  email<br>
+  <input type="text" name="email" value="<%=employee.email%>">
+  <br><br>
+  mobile<br>
+  <input type="text" name="mobile" value="<%=employee.mobile%>" >
+  <br>
+  city<br>
+  <input type="text" name="city"  value="<%=employee.city%>">
+  <br><br>
+  <input type="submit" value="Submit">
+</form> 
+</div>
+</body>
+</html>

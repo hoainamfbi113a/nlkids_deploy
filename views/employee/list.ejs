@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h2>Basic HTML Table</h2>
+      <table style="width:100%">
+        <%list.forEach(list => {%>
+           <tr>
+            <th><%=list.fullname%></th>
+            <th><%=list.email%></th>
+            <th><%=list.mobile%></th>
+            <th><%=list.city%></th>
+            <th>
+               <a href="/employee/delete/<%=list._id%>">Xoa</a>
+               <a href="/employee/<%=list._id%>">Update</a>
+               </th>
+         </tr>
+      <%  });%>
+      </table>
+   </body>
+</html>

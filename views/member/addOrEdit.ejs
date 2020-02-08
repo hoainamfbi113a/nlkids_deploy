@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div style="margin-left: 600px">
+<h2>HTML Forms</h2>
+
+<form action="/admin/member" method="POST">
+  
+  <input type="hidden" name="_id" value="<%=member._id%>">
+  fullname<br>
+  <input type="text" name="memberCategory" value="<%=member.memberCategory%>">
+  <br>
+  memberLogin<br>
+  <input type="text" name="memberLogin" value="<%=member.memberLogin%>">
+  <br><br>
+  memberPass<br>
+  <input type="text" name="memberPass" value="<%=member.memberPass%>" >
+  <br>
+  memberName<br>
+  <input type="text" name="memberName"  value="<%=member.memberName%>">
+  <br>memberDate<br>
+  <input type="text" name="memberDate" value="<%=member.memberDate%>">
+  memberSex<br>
+  <input type="text" name="memberSex" value="<%=member.memberSex%>">
+  <br>
+  memberAddress<br>
+  <input type="text" name="memberAddress" value="<%=member.memberAddress%>">
+  <br><br>
+  memberClassId<br>
+  <input type="text" name="memberClassId" value="<%=member.memberClassId%>" >
+  <br><br>
+  <input type="submit" value="Submit">
+</form> 
+</div>
+</body>
+</html>

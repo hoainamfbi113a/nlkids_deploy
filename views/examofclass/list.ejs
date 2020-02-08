@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Document</title>
+
+</head>
+<body>
+
+   <div class="container">
+      <form action="/client/dethi" method="POST">
+      <%list.forEach((list,index) => {%>
+
+      <h2><%=list.questionName%></h2>
+     <ul>
+     <li>
+       <input type="radio"  name="ans<%=index%>" value="A">
+       <label ><%=list.questionResultA%></label>
+     </li>  
+     <li>
+       <input type="radio" name="ans<%=index%>" value="B">
+       <label ><%=list.questionResultB%></label>  
+     </li>  
+     <li>
+       <input type="radio" name="ans<%=index%>" value="C">
+       <label ><%=list.questionResultC%></label>
+     </li>
+     <li>
+       <input type="radio"  name="ans<%=index%>" value="D">
+       <label ><%=list.questionResultD%></label>
+     </li>
+   </ul>
+   
+   <%  });%>
+
+   <input type="submit" class="btn btn-primary" value="Nộp bài"/>
+      </form>
+
+   
+   </div>
+</body>
+</html>

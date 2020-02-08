@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h2>Basic HTML Table</h2>
+      <table style="width:100%">
+        <%list.forEach(list => {%>
+           <tr>
+            <th><%=list.questionCategoryId%></th>
+            <th><%=list.questionName%></th>
+            <th><%=list.questionResultA%></th>
+            <th><%=list.questionResultB%></th>
+            <th><%=list.questionResultC%></th>
+            <th><%=list.questionResultD%></th>
+            <th><%=list.questionResultRight%></th>
+            <th>
+               <a href="/admin/question/delete/<%=list._id%>">Xoa</a>
+               <a href="/admin/question/<%=list._id%>">Update</a>
+               </th>
+         </tr>
+      <%  });%>
+      </table>
+   </body>
+</html>

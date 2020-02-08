@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div style="margin-left: 600px">
+        <h2>HTML Forms</h2>
+        <form action="/admin/question" method="POST">
+            <input type="hidden" name="_id" value="<%=question._id%>"> fullname
+            <br>
+            <input type="text" name="questionCategoryId" value="<%=question.questionCategoryId%>">
+            <br> questionName
+            <br>
+            <input type="text" name="questionName" value="<%=question.questionName%>">
+            <br>
+            <br> questionResultA
+            <br>
+            <input type="text" name="questionResultA" value="<%=question.questionResultA%>">
+            <br> questionResultB
+            <br>
+            <input type="text" name="questionResultB" value="<%=question.questionResultB%>">
+            <br>questionResultC
+            <br>
+            <input type="text" name="questionResultC" value="<%=question.questionResultC%>"> questionResultD
+            <br>
+            <input type="text" name="questionResultD" value="<%=question.questionResultD%>">
+            <br> questionResultRight
+            <br>
+            <input type="text" name="questionResultRight" value="<%=question.questionResultRight%>">
+            <br>
+            <br>
+            <input type="submit" value="Submit"> </form>
+    </div>
+</body>
+
+</html>
