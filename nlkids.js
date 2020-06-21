@@ -12,13 +12,15 @@ var examController = require('./controller/controllerExam');
 var userController = require('./controller/client/controllerUser');
 var dethiContoller = require('./controller/controllerthi');
 var resultController = require('./controller/controllerresult');
+var lessionContentController = require('./controller/controllerLessonContent');
+var newController = require('./controller/controllerNews');
 var app = express();
 var port = process.env.PORT || 5000
 app.use(cors())
 app.listen(port);
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname, '/views/'));
-
+app.use(express.static(__dirname + '/public'));
 app.use(body_parser.urlencoded({
   extended:false
 }));
@@ -32,4 +34,6 @@ app.use('/admin/result',resultController);
 
 app.use('/users', userController)
 app.use('/client/dethi', dethiContoller);
+app.use('/admin/lession', lessionContentController);
+app.use('/admin/news', newController);
 

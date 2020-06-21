@@ -2,18 +2,42 @@ const express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 var News = require('../models/newsmodel');
-
+var multer = require("multer");
+var upload = multer({dest:'./public/uploads'})
+    const path = require('path');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./public/uploads");
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null,Date.now()+ '-' + fileName)
+    }
+});
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
 router.get('/', (req, res) => {
-    res.render("news/addNews");
+    res.render("new/addOrEdit");
 
 });
-router.post('/', (req, res) => {
-    if (req.body._id == '') {
+router.post('/',upload.single('selectedFile'), (req, res,next) => {
+    if (req.body._id == ''|| req.body._id === undefined) {
+        console.log(req.file);
         let news = new News();
         news.title = req.body.title;
-        news.images = req.body.images;
+        news.images = req.file.path.split('/').slice(1).join('/');
         news.contents = req.body.contents;
         news.timeUpdate = req.body.timeUpdate;
+        // console.log(req.file.path.split('/').slice(1).join('/'));
         news.save((err, doc) => {
             if (!err)
                 res.redirect('news/list');
@@ -38,8 +62,8 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
     News.find((err, docs) => {//tìm toàn bộ 
         if (!err) {
             res.json(docs);
-            // res.render("news/list", {
-                list: docs//gán vào list và tiến hành render ra
+            // res.render("new/list", {
+            //     list: docs//gán vào list và tiến hành render ra
             // });
             //  
         }

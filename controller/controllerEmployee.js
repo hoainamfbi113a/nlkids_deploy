@@ -45,10 +45,10 @@ function updateRecord(req, res) {//tiến hành update dư liệu
 router.get('/list', (req, res) => {//lấy toàn bộ employee
     Employee.find((err, docs) => {//tìm toàn bộ 
         if (!err) {
-            // res.render("employee/list", {
-            //     list: docs//gán vào list và tiến hành render ra
-            // });
-             res.json(docs);
+            res.render("employee/list", {
+                list: docs//gán vào list và tiến hành render ra
+            });
+            //  res.json(docs);
         }
         else {
             console.log('Error in retrieving employee list :' + err);
