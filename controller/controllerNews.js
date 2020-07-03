@@ -30,31 +30,44 @@ router.get('/', (req, res) => {
 
 });
 router.post('/',upload.single('selectedFile'), (req, res,next) => {
-    if (req.body._id == ''|| req.body._id === undefined) {
-        console.log(req.file);
+    console.log("ID: " + req.body._id)
+    if (req.body._id === ''|| req.body._id === undefined) {
         let news = new News();
         news.title = req.body.title;
+        if(req.file){
         news.images = req.file.path.split('/').slice(1).join('/');
+        }
+        else{
+            news.images = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+        }
         news.contents = req.body.contents;
         news.timeUpdate = req.body.timeUpdate;
         // console.log(req.file.path.split('/').slice(1).join('/'));
         news.save((err, doc) => {
             if (!err)
-                res.redirect('news/list');
+                // res.redirect('news/list');
+                console.log("add new done")
             else {
                 console.log('Error during record insertion :' + err);
             }
         });
     }
     else {// req có id sẽ hiểu là đang update
+        // news.title = req.body.title;
+        if(req.file){
+            req.body.images = req.file.path.split('/').slice(1).join('/');
+        }
+        else{
+            req.body.images = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+        }
         News.findOneAndUpdate({ _id: req.body._id },req.body,{new:true},(err,doc)=>{
             if (!err) 
             {
-                 res.redirect('news/list');
+                res.json({ status: 200 });
             }
             else {
             console.log('Error during record update:' + err);
-                    }
+            }
          } );
         }
 })
@@ -62,10 +75,6 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
     News.find((err, docs) => {//tìm toàn bộ 
         if (!err) {
             res.json(docs);
-            // res.render("new/list", {
-            //     list: docs//gán vào list và tiến hành render ra
-            // });
-            //  
         }
         else {
             console.log('Error in retrieving news list :' + err);
@@ -74,25 +83,22 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
 });
 
 router.get('/delete/:id', (req, res) => {
-
+    console.log("a"+ req.params.id)
     News.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            res.redirect('/news/list');
+            res.json({ status: 200 });
         }
         else { console.log('Error in news delete:' + err); }
     });
 });
 router.get('/:id', (req, res) => {
-
     News.findById(req.params.id, (err, doc) => {
         if (!err) {
-            res.render('news/updateNews', {
-                news: doc
-            });
-
+            res.json(doc);
         }
         else { console.log('Error in news update:' + err); }
     });
 
 });
+
 module.exports = router;

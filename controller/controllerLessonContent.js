@@ -2,53 +2,62 @@ const express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 var Lession = require('../models/lessonContentModel');
-const multer = require("multer");
-router.get('/', (req, res) => {
-    res.render("news/addNews");
-
-});
-let storage = multer.diskStorage({
+var multer = require("multer");
+var upload = multer({ dest: './public/uploads' })
+const path = require('path');
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads/");
+        cb(null, "./public/uploads");
     },
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`);
-    },
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, Date.now() + '-' + fileName)
+    }
+});
+var upload = multer({
+    storage: storage,
     fileFilter: (req, file, cb) => {
-        const ext = path.extname(file.originalname)
-        if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
-            return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
         }
-        cb(null, true)
     }
 });
 
-router.post('/', (req, res) => {
-    if (req.body._id == '') {
+router.post('/',upload.single('lessionContentImg'), (req, res) => {
+    console.log("Voooooo");
+    if (req.body._id == '' || req.body._id === undefined) {
         let lession = new Lession();
         lession.lessionContentSubjects = req.body.lessionContentSubjects;
         lession.lessionContentTitle = req.body.lessionContentTitle;
-        lession.lessionContentImg = req.body.lessionContentImg;
+        // lession.lessionContentImg = req.body.lessionContentImg;
+        if (req.file) {
+            lession.lessionContentImg = req.file.path.split('/').slice(1).join('/');
+        }
+        else {
+            lession.lessionContentImg = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+        }
         lession.lessionContentDetail = req.body.lessionContentDetail;
         lession.save((err, doc) => {
             if (!err)
-                res.redirect('lession/list');
+                console.log("add new done")
             else {
                 console.log('Error during record insertion :' + err);
             }
         });
     }
     else {// req có id sẽ hiểu là đang update
-        Lession.findOneAndUpdate({ _id: req.body._id },req.body,{new:true},(err,doc)=>{
-            if (!err) 
-            {
-                 res.redirect('lession/list');
+        Lession.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
+            if (!err) {
+                res.redirect('lession/list');
             }
             else {
-            console.log('Error during record update:' + err);
-                    }
-         } );
-        }
+                console.log('Error during record update:' + err);
+            }
+        });
+    }
 })
 router.get('/list', (req, res) => {//lấy toàn bộ employee
     Lession.find((err, docs) => {//tìm toàn bộ 
@@ -83,22 +92,4 @@ router.get('/:id', (req, res) => {
     });
 
 });
-const upload = multer({ storage: storage }).single("file");
-router.post("/uploadfiles", (req, res) => {
-    upload(req, res, err => {
-        if (err) {
-            return res.json({ success: false, err });
-        }
-        return res.json({ success: true, url: res.req.file.path, fileName: res.req.file.filename });
-    });
-});
-
-router.post("/createPost", (req, res) => {
-    let blog = new Blog({ content: req.body.content, writer: req.body.userID });
-
-    blog.save((err, postInfo) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).json({ success: true, postInfo })
-    })
-})
 module.exports = router;
