@@ -39,8 +39,8 @@ router.post('/',upload.single('selectedFile'), (req, res,next) => {
         news.timeUpdate = req.body.timeUpdate;
         // console.log(req.file.path.split('/').slice(1).join('/'));
         news.save((err, doc) => {
-            if (!err)
-                res.redirect('news/list');
+            if (!err){}
+             //   res.redirect('news/list');
             else {
                 console.log('Error during record insertion :' + err);
             }
@@ -50,7 +50,7 @@ router.post('/',upload.single('selectedFile'), (req, res,next) => {
         News.findOneAndUpdate({ _id: req.body._id },req.body,{new:true},(err,doc)=>{
             if (!err) 
             {
-                 res.redirect('news/list');
+                //  res.redirect('news/list');
             }
             else {
             console.log('Error during record update:' + err);
@@ -77,7 +77,7 @@ router.get('/delete/:id', (req, res) => {
 
     News.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            res.redirect('/news/list');
+            res.json(doc);
         }
         else { console.log('Error in news delete:' + err); }
     });
@@ -86,10 +86,7 @@ router.get('/:id', (req, res) => {
 
     News.findById(req.params.id, (err, doc) => {
         if (!err) {
-            res.render('news/updateNews', {
-                news: doc
-            });
-
+            res.json(doc);
         }
         else { console.log('Error in news update:' + err); }
     });
