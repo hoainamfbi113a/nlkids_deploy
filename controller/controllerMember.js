@@ -55,7 +55,7 @@ const userData = //nhận dữ liệu từ react gửi qua
     memberLogin: req.body.memberLogin
   })
     .then(member => {
-       
+      
       if (!member) {//Không trùng với bất kỳ memberLogin nào và tiến hành đăng ký
         bcrypt.hash(req.body.memberPass, 10, (err, hash) => {//hash mật khẩu người dùng đăng ký
           userData.memberPass = hash
