@@ -82,6 +82,7 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
     });
 });
 
+
 router.get('/delete/:id', (req, res) => {
     console.log("a"+ req.params.id)
     News.findByIdAndRemove(req.params.id, (err, doc) => {
@@ -100,5 +101,6 @@ router.get('/:id', (req, res) => {
     });
 
 });
+
 
 module.exports = router;

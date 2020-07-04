@@ -42,7 +42,7 @@ const userData = //nhận dữ liệu từ react gửi qua
   {
     memberLogin: req.body.memberLogin,
     memberPass: req.body.memberPass,
-    memberClassId: 'Toán lớp 1',
+    memberClassId: req.body.memberClassId,
     memberCategory : '1',
     memberName : req.body.memberName,
     memberDate : req.body.memberDate,
@@ -102,7 +102,6 @@ router.get('/list', (req, res) => {//lấy toàn bộ Member
     });
 });
 router.get('/:id', (req, res) => {//tìm id để tiến hành update
-   
     Member.findById(req.params.id, (err, doc) => {
         if (!err) {//không có lỗi thì điền vào form dữ liệu update
             // res.render("member/addOrEdit", {
