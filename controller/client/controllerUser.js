@@ -126,5 +126,68 @@ users.get('/profile', (req, res) => {
       res.send('error: ' + err)
     })
 })
+users.post('/loginfacebook', (req, res) => {
+  const today = new Date()
+  console.log(req.body.memberPass);
+  const userData = //nhận dữ liệu từ react gửi qua
+  {
+    memberLogin: req.body.memberLogin,
+    memberPass: req.body.memberPass,
+    memberClassId: 'Toán lớp 1',
+    memberCategory:'1',
+    created: today
+  }
+  User.findOne({//Kiểm tra memberLogin người dùng đăng ký đã tồn tại hay không
+    memberLogin: req.body.memberLogin
+  })
+    .then(user => {
+      if (!user) {//Không trùng với bất kỳ memberLogin nào và tiến hành đăng ký
+        bcrypt.hash(req.body.memberPass, 10, (err, hash) => {//hash mật khẩu người dùng đăng ký
+          userData.memberPass = hash
+          User.create(userData)//tiến hành tạo tài khoản 
+            .then(user => {
+              res.json({ status: user.memberLogin + 'Registered!' })//trả lại cho reactjs nếu đăng ký thành công
+            })
+            .catch(err => {
+              res.send('error: ' + err)//trả ra lỗi
+            })
+        })
+        
+
+      } else {
+        User.findOne({
+          memberLogin: req.body.memberLogin
+        })
+          .then(user => {
+            if (user) {
+              if (bcrypt.compareSync(req.body.memberPass, user.memberPass)&&user.memberCategory==="1") {//so sanh mat khau da hash
+                const payload = {//luu vao payload de gui token
+                  _id: user._id,
+                  memberClassId: user.memberClassId,
+                  memberLogin: user.memberLogin
+                }
+                let token = jwt.sign(payload, process.env.SECRET_KEY, {//dang ky token user
+                  expiresIn: '1h'//thoi gian ton tai token
+                })
+                res.send(token)
+             //   console.log('exist');
+              } else {
+                // memberPasss don't match
+                res.send('User not exists')
+              }
+            } else {
+              res.send('User not exists')
+            }
+          })
+          .catch(err => {
+            res.send(err)
+          })
+        
+      }
+    })
+    .catch(err => {
+      res.send('error: ' + err)
+    })
+})
 
 module.exports = users
