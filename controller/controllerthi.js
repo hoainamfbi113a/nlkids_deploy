@@ -15,11 +15,11 @@ router.post('/', (req, res) => {
 });
 
 
-function xulydethivachamdiem(req,res){
+async function xulydethivachamdiem (req,res){
 		var iddethi = req.body.iddethi;
 		console.log(iddethi);
 		var docss=[];
-    	Examcontent.find({examId:iddethi},(err, docs) => {//tìm toàn bộ 
+    await Examcontent.find({examId:iddethi},(err, docs) => {//tìm toàn bộ 
 			if (!err) {
 				// console.log(docs);
 				for(var i=0 ;i <docs.length;i++)
@@ -34,7 +34,7 @@ function xulydethivachamdiem(req,res){
 		setTimeout(()=>{
 				// console.log(docss);
 				var memberid = req.body.memberid;
-				//var listcorrectanswer =[]
+				// var listcorrectanswer =[]
 				var listcorrectanswers=[];
 				var socaudung = 0;
 				var arrAnsweruser = [];
@@ -64,7 +64,7 @@ function xulydethivachamdiem(req,res){
 					}
 				});
 				res.send(socaudung.toString());
-					},200)
+					},1000)
 					
 		
 }
