@@ -32,14 +32,13 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
         let lession = new Lession();
         lession.lessionContentSubjects = req.body.lessionContentSubjects;
         lession.lessionContentTitle = req.body.lessionContentTitle;
-        // lession.lessionContentImg = req.body.lessionContentImg;
+        lession.lessionContentDetail = req.body.lessionContentDetail;
         if (req.file) {
             lession.lessionContentImg = req.file.path.split('/').slice(1).join('/');
         }
         else {
             lession.lessionContentImg = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
         }
-        lession.lessionContentDetail = req.body.lessionContentDetail;
         lession.save((err, doc) => {
             if (!err)
                 console.log("add new done")

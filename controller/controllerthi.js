@@ -13,8 +13,6 @@ router.post('/', (req, res) => {
     // console.log(req.body.ans2);
     xulydethivachamdiem(req,res)
 });
-
-
 async function xulydethivachamdiem (req,res){
 		var iddethi = req.body.iddethi;
 		console.log(iddethi);

@@ -3,77 +3,104 @@ const bcrypt = require('bcrypt')//dùng để hash function
 var router = express.Router();
     const mongoose = require('mongoose');
     var Member = require('../models/membermodel'); 
-
+    var multer = require("multer");
+    var upload = multer({ dest: './public/uploads/avataruser' })
+    const path = require('path');
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, "./public/uploads/avataruser");
+        },
+        filename: (req, file, cb) => {
+            const fileName = file.originalname.toLowerCase().split(' ').join('-');
+            cb(null, Date.now() + '-' + fileName)
+        }
+    });
+    var upload = multer({
+        storage: storage,
+        fileFilter: (req, file, cb) => {
+            if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+                cb(null, true);
+            } else {
+                cb(null, false);
+                return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+            }
+        }
+    });
+    
 router.get('/', (req, res) => {
     res.render("member/addOrEdit", {
         member:[]
     });
 });
-router.post('/', (req, res) => {
-    if (req.body._id === 'undefined'||req.body._id=='')
+router.post('/',upload.single('avatarContentImg'), (req, res) => {
+  // console.log(req.body._id+"xin chao")
+    if (req.body._id === undefined||req.body._id === '')
         {
+            // console.log("insert1");
             insertRecord(req, res);
         }
         else
         updateRecord(req, res);
 });
 function insertRecord(req, res) {//thêm dữ liệu
-    // var member = new Member();//tạo một Member mới
-    // bcrypt.hash(req.body.memberPass, 10, (err, hash) => {//hash mật khẩu người dùng đăng ký
-    //         member.memberCategory = req.body.memberCategory;
-    //         member.memberLogin = req.body.memberLogin;
-    //         member.memberPass = hash;
-    //         member.memberName = req.body.memberName;
-    //         member.memberDate = req.body.memberDate;
-    //         member.memberSex = req.body.memberSex;
-    //         member.memberAddress = req.body.memberAddress;
-    //         member.memberClassId = req.body.memberClassId;
-    //         member.save((err, doc) => {//thêm dữ liệu vào database
-    //             if (!err)//nếu thành công
-    //                 // res.redirect('member/list');
-    //                 console.log('them thanh cong');
-    //             else {//nếu lỗi
-    //                     console.log('Error during record insertion : ' + err);
-    //             }
-    //         });
-    //   })
+    // console.log("insert2");
+    const userData = //nhận dữ liệu từ react gửi qua
+      {
+        memberLogin: req.body.memberLogin,
+        memberPass: req.body.memberPass,
+        memberCategory : '1',
+        memberName : req.body.memberName,
+        memberDate : req.body.memberDate,
+        memberSex : req.body.memberSex,
+        memberAddress : req.body.memberAddress,
 
-const userData = //nhận dữ liệu từ react gửi qua
-  {
-    memberLogin: req.body.memberLogin,
-    memberPass: req.body.memberPass,
-    memberClassId: req.body.memberClassId,
-    memberCategory : '1',
-    memberName : req.body.memberName,
-    memberDate : req.body.memberDate,
-    memberSex : req.body.memberSex,
-    memberAddress : req.body.memberAddress,
-
-  }
-  
-  Member.findOne({//Kiểm tra memberLogin người dùng đăng ký đã tồn tại hay không
-    memberLogin: req.body.memberLogin
-  })
-    .then(member => {
-      
-      if (!member) {//Không trùng với bất kỳ memberLogin nào và tiến hành đăng ký
-        bcrypt.hash(req.body.memberPass, 10, (err, hash) => {//hash mật khẩu người dùng đăng ký
-          userData.memberPass = hash
-          Member.create(userData)//tiến hành tạo tài khoản 
-            .then(Member => {
-              res.json({ status: Member.memberLogin + 'Registered!' })//trả lại cho reactjs nếu đăng ký thành công
-            })
-            .catch(err => {
-              res.send('error: ' + err)//trả ra lỗi
-            })
-        })
-      } else {
-        res.send('User already exists')//xuất ra lỗi nếu memberLogin đã tồn tại
       }
-    })
-    .catch(err => {
-      res.send('error: ' + err)
-    }) 
+      // console.log(req.body.memberLogin+"aaaaa");
+      Member.findOne({//Kiểm tra memberLogin người dùng đăng ký đã tồn tại hay không
+        memberLogin: req.body.memberLogin
+      })
+        .then(member => {
+          if (!member) {//Không trùng với bất kỳ memberLogin nào và tiến hành đăng ký
+                bcrypt.hash(req.body.memberPass, 10, (err, hash) => {//hash mật khẩu người dùng đăng ký
+                // userData.memberPass = hash;
+                let member = new Member();
+                member.memberLogin = req.body.memberLogin;
+                member.memberPass = req.body.memberPass;
+                member.memberCategory = '1';
+                member.memberName = req.body.memberName;
+                member.memberDate = req.body.memberDate;
+                member.memberSex = req.body.memberSex;
+                member.memberAddress = req.body.memberAddress;
+            if (req.file) {
+                console.log(req.file.path.split('/').slice(1).join('/'));
+                member.avatarContentImg = req.file.path.split('/').slice(1).join('/');
+            }
+            else {
+                member.avatarContentImg = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+            }
+            console.log(member.avatarContentImg);
+            member.save((err, doc) => {
+                if (!err)
+                    console.log("add member done")
+                else {
+                    console.log('Error during record insertion :' + err);
+                }
+            });
+              // Member.create(userData)//tiến hành tạo tài khoản 
+              //   .then(Member => {
+              //     res.json({ status: Member.memberLogin + 'Registered!' })//trả lại cho reactjs nếu đăng ký thành công
+              //   })
+              //   .catch(err => {
+              //     res.send('error: ' + err)//trả ra lỗi
+              //   })
+            })
+          } else {
+            res.send('User already exists')//xuất ra lỗi nếu memberLogin đã tồn tại
+          }
+        })
+        .catch(err => {
+          res.send('error: ' + err)
+        }) 
 }
 
 function updateRecord(req, res) {//tiến hành update dư liệu
