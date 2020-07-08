@@ -8,12 +8,13 @@ var employeeController = require('./controller/controllerEmployee');
 var memberController = require('./controller/controllerMember');
 var questionController = require('./controller/controllerQuestion');
 var examController = require('./controller/controllerExam');
-
 var userController = require('./controller/client/controllerUser');
 var dethiContoller = require('./controller/controllerthi');
 var resultController = require('./controller/controllerresult');
 var lessionContentController = require('./controller/controllerLessonContent');
 var newController = require('./controller/controllerNews');
+
+var newControllerClient =require("./controller/client/controllerNews");
 var app = express();
 var port = process.env.PORT || 5000
 app.use(cors())
@@ -31,9 +32,12 @@ app.use('/admin/member',memberController);
 app.use('/admin/question',questionController);
 app.use('/admin/exam',examController);
 app.use('/admin/result',resultController);
+app.use('/admin/lession', lessionContentController);
+app.use('/admin/news', newController);
 
 app.use('/users', userController)
 app.use('/client/dethi', dethiContoller);
-app.use('/admin/lession', lessionContentController);
-app.use('/admin/news', newController);
+app.use('/client/news', newControllerClient);
+app.use('/client/lesson', lessonControllerClient);
+
 
