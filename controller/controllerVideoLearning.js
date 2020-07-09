@@ -27,7 +27,7 @@ var upload = multer({
 });
 
 router.post('/', (req, res) => {
-    console.log(req.body.videoContentSubjects);
+    // console.log(req.body.videoContentVideo);
     if (req.body._id == '' || req.body._id === undefined) {
         let videoLearning = new VideoLearning();
         videoLearning.videoContentSubjects = req.body.videoContentSubjects;
@@ -43,9 +43,10 @@ router.post('/', (req, res) => {
         });
     }
     else {// req có id sẽ hiểu là đang update
+        // console.log("updating");
         VideoLearning.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
             if (!err) {
-                res.redirect('/list');
+                res.json({ status: 200 });
             }
             else {
                 console.log('Error during record update:' + err);
