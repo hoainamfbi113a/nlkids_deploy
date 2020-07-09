@@ -30,8 +30,8 @@ router.post('/', (req, res) => {
     console.log(req.body.videoContentSubjects);
     if (req.body._id == '' || req.body._id === undefined) {
         let videoLearning = new VideoLearning();
-        videoLearning.title = req.body.videoContentSubjects;
-        videoLearning.contents = req.body.videoContentTitle;
+        videoLearning.videoContentSubjects = req.body.videoContentSubjects;
+        videoLearning.videoContentTitle = req.body.videoContentTitle;
         videoLearning.videoContentDetail = req.body.videoContentDetail;
         videoLearning.videoContentVideo = req.body.videoContentDetail;
         videoLearning.save((err, doc) => {
@@ -78,7 +78,7 @@ router.get('/delete/:id', (req, res) => {
 
     VideoLearning.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            res.redirect('/goodstudent/list');
+            res.json({ status: 200 });
         }
         else { console.log('Error in goodstudent delete:' + err); }
     });
