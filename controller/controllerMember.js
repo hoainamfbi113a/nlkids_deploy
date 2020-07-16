@@ -32,7 +32,13 @@ router.get('/', (req, res) => {
         member:[]
     });
 });
-router.post('/',upload.single('avatarContentImg'), (req, res) => {
+// router.post('/',upload.single('avatarContentImg'),upload.single('avatarContentImg2'), (req, res) => {
+router.post('/',upload.fields([{
+    name: 'avatarContentImg',
+    maxCount: 1,
+}, {
+    name: 'avatarContentImg2'
+}]), (req, res) => {
   // console.log(req.body._id+"xin chao")
     if (req.body._id === undefined||req.body._id === '')
         {

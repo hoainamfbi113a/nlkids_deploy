@@ -9,8 +9,9 @@ router.get('/', (req, res) => {
     });
 });
 router.post('/', (req, res) => {
+    
     // console.log(req.body._id+'  a');
-    if (req.body._id == '')
+    if (req.body._id == ''|| req.body._id === undefined)
         insertRecord(req, res);
         else
         updateRecord(req, res);
@@ -19,6 +20,7 @@ function insertRecord(req, res) {//thêm dữ liệu
   //  insertdethidetail(req,res)
     var exam = new Exam();//tạo một exam mới
     exam.examName = req.body.examName;
+    // console.log(req.body.examName);
     // exam.examEasyNumber = req.body.examEasyNumber;
     // exam.examMediumNumber = req.body.examMediumNumber;
     // exam.examDifficultNumber = req.body.examDifficultNumber;
