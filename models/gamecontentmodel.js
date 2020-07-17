@@ -1,16 +1,11 @@
 var mongoose = require('mongoose');
-var gameSchema = mongoose.Schema({
-    membergame:{
-        avatarContentImg:String,
-        memberName:String
-    },
+var gameContentSchema = mongoose.Schema({
     categoryvocabulary:{
         type:String
     },
     vocabularygame:{
         type:String
     },
-
     spellingvocabulary:{
         type:String
     },
@@ -31,4 +26,4 @@ var gameSchema = mongoose.Schema({
     },
     created: { type: Date, default: Date.now }
 })
-module.exports= mongoose.model('game',gameSchema);
+module.exports= mongoose.model('gamecontent',gameContentSchema);

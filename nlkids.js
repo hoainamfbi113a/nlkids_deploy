@@ -16,6 +16,7 @@ var newController = require('./controller/controllerNews');
 var goodStudentController = require('./controller/controllerGoodStudent');
 var videoLearningController = require('./controller/controllerVideoLearning');
 var classSubjectController = require('./controller/controllerClass');
+var gameController = require('./controller/controllerGame');
 
 var newControllerClient = require("./controller/client/controllerNews");
 var lessonControllerClient = require("./controller/client/controllerLesson")
@@ -43,6 +44,7 @@ app.use('/admin/news', newController);
 app.use('/admin/goodstudent', goodStudentController);
 app.use('/admin/videolearning', videoLearningController);
 app.use('/admin/classsubject', classSubjectController);
+app.use('/admin/game', gameController);
 
 app.use('/users', userController)
 app.use('/client/dethi', dethiContoller);

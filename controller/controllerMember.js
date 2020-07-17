@@ -4,11 +4,11 @@ var router = express.Router();
     const mongoose = require('mongoose');
     var Member = require('../models/membermodel'); 
     var multer = require("multer");
-    var upload = multer({ dest: './public/uploads/avataruser' })
+    var upload = multer({ dest: './public/uploads' })
     const path = require('path');
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, "./public/uploads/avataruser");
+            cb(null, "./public/uploads");
         },
         filename: (req, file, cb) => {
             const fileName = file.originalname.toLowerCase().split(' ').join('-');
@@ -32,17 +32,10 @@ router.get('/', (req, res) => {
         member:[]
     });
 });
-// router.post('/',upload.single('avatarContentImg'),upload.single('avatarContentImg2'), (req, res) => {
-router.post('/',upload.fields([{
-    name: 'avatarContentImg',
-    maxCount: 1,
-}, {
-    name: 'avatarContentImg2'
-}]), (req, res) => {
-  // console.log(req.body._id+"xin chao")
+router.post('/',upload.single('avatarContentImg'),upload.single('avatarContentImg2'), (req, res) => {
+// router.post('/', (req, res) => {
     if (req.body._id === undefined||req.body._id === '')
         {
-            // console.log("insert1");
             insertRecord(req, res);
         }
         else
@@ -52,7 +45,7 @@ function insertRecord(req, res) {//thêm dữ liệu
     // console.log("insert2");
     const userData = //nhận dữ liệu từ react gửi qua
       {
-        memberLogin: req.body.memberLogin,
+        membergame: req.body.memberLogin,
         memberPass: req.body.memberPass,
         memberCategory : '1',
         memberName : req.body.memberName,

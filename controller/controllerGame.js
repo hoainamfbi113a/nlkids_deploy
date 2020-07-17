@@ -2,12 +2,13 @@ const express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 var Games = require('../models/gamemodel');
+var gameContentSchema = require('../models/gamecontentmodel');
 var multer = require("multer");
-var upload = multer({dest:'./public/uploads'})
+var upload = multer({dest:'./public/uploads/game'})
     const path = require('path');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./public/uploads");
+        cb(null, "./public/uploads/game");
     },
     filename: (req, file, cb) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
@@ -29,25 +30,52 @@ router.get('/', (req, res) => {
     res.render("new/addOrEdit");
 
 });
-router.post('/',upload.single('selectedFile'), (req, res,next) => {
-    console.log("ID: " + req.body._id)
+router.post('/',upload.fields([{
+    name: 'imgQuestionA',
+    maxCount: 1,
+}, {
+    name: 'imgQuestionB'
+},
+{
+    name: 'imgQuestionC'
+}
+]), (req, res,next) => {
+    // console.log("ID: ");
     if (req.body._id === ''|| req.body._id === undefined) {
+        // console.log(req.files['imgQuestionA'][0].path)
+        // console.log(req.files['imgQuestionB'])
+        // console.log(req.file);
         let games = new Games();
-        games.title = req.body.title;
-        games.categorygames = req.body.categorygames;
-        if(req.file){
-        games.images = req.file.path.split('/').slice(1).join('/');
+        // console.log(req.body.vocabularygame+"aaa");
+        games.categoryvocabulary = req.body.categoryvocabulary;
+        games.vocabularygame = req.body.vocabularygame;
+        games.spellingvocabulary = req.body.spellingvocabulary;
+        games.meaningA = req.body.meaningA;
+        games.meaningB = req.body.meaningB;
+        games.meaningC = req.body.meaningC;
+        games.questionResultRight = req.body.questionResultRight;
+        
+        if(req.files['imgQuestionA']){
+            games.questionResultA.ImgQuestionA = req.files['imgQuestionA'][0].path.split('/').slice(1).join('/');
         }
         else{
-            games.images = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+            games.questionResultA.ImgQuestionA = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
         }
-        games.contents = req.body.contents;
-        games.timeUpdate = req.body.timeUpdate;
-        // console.log(req.file.path.split('/').slice(1).join('/'));
+        if(req.files['imgQuestionB']){
+            games.questionResultB.ImgQuestionB = req.files['imgQuestionB'][0].path.split('/').slice(1).join('/');
+        }
+        else{
+            games.questionResultB.ImgQuestionB = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+        }
+        if(req.files['imgQuestionC']){
+            games.questionResultC.ImgQuestionC = req.files['imgQuestionC'][0].path.split('/').slice(1).join('/');
+        }
+        else{
+            games.questionResultC.ImgQuestionC = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+        }
         games.save((err, doc) => {
             if (!err)
-                // res.redirect('games/list');
-                console.log("add new done")
+            res.json({ status: 200 });
             else {
                 console.log('Error during record insertion :' + err);
             }
@@ -76,6 +104,28 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
     Games.find((err, docs) => {//tìm toàn bộ 
         if (!err) {
             res.json(docs);
+        }
+        else {
+            console.log('Error in retrieving Games list :' + err);
+        };
+    });
+});
+router.get('/generate', (req, res) => {//
+    let gameId = []
+    let dem = 0;
+    let count = 0;
+    Games.find((err, docs) => {//tìm toàn bộ 
+        if (!err) {
+            // res.json(docs);
+            docs.sort((a, b) => a.categoryvocabulary > b.categoryvocabulary);
+            dem ++;
+            if(count<=10){
+                gameContentSchema.categoryvocabulary
+                gameContentSchema.categoryvocabulary
+                gameContentSchema.categoryvocabulary
+                gameContentSchema.categoryvocabulary
+                gameContentSchema.categoryvocabulary
+            }
         }
         else {
             console.log('Error in retrieving Games list :' + err);
