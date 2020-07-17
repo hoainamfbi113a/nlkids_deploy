@@ -19,6 +19,8 @@ var classSubjectController = require('./controller/controllerClass');
 
 var newControllerClient = require("./controller/client/controllerNews");
 var lessonControllerClient = require("./controller/client/controllerLesson")
+var forumQuestionControllerClient = require("./controller/client/contronllerForumQuestion")
+
 var app = express();
 var port = process.env.PORT || 5000
 app.use(cors())
@@ -46,5 +48,6 @@ app.use('/users', userController)
 app.use('/client/dethi', dethiContoller);
 app.use('/client/news', newControllerClient);
 app.use('/client/lesson', lessonControllerClient);
+app.use('/client/forumquestion', forumQuestionControllerClient);
 
 
