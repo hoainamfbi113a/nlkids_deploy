@@ -1,13 +1,13 @@
 const express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-var Lession = require('../models/lessonContentModel');
+var GoodStudent = require('../models/goodstudentmodel');
 var multer = require("multer");
-var upload = multer({ dest: './public/uploads' })
+var upload = multer({ dest: './public/uploads/goodstudent' })
 const path = require('path');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./public/uploads");
+        cb(null, "./public/uploads/goodstudent");
     },
     filename: (req, file, cb) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
@@ -26,20 +26,20 @@ var upload = multer({
     }
 });
 
-router.post('/',upload.single('lessionContentImg'), (req, res) => {
+router.post('/',upload.single('images'), (req, res) => {
     console.log("Voooooo");
     if (req.body._id == '' || req.body._id === undefined) {
-        let lession = new Lession();
-        lession.lessionContentSubjects = req.body.lessionContentSubjects;
-        lession.lessionContentTitle = req.body.lessionContentTitle;
-        lession.lessionContentDetail = req.body.lessionContentDetail;
+        let goodstudent = new GoodStudent();
+        goodstudent.title = req.body.title;
+        goodstudent.contents = req.body.contents;
+        // goodstudent.images = req.body.lessionContentDetail;
         if (req.file) {
-            lession.lessionContentImg = req.file.path.split('/').slice(1).join('/');
+            goodstudent.images = req.file.path.split('/').slice(1).join('/');
         }
         else {
-            lession.lessionContentImg = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
+            goodstudent.images = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
         }
-        lession.save((err, doc) => {
+        goodstudent.save((err, doc) => {
             if (!err)
                 console.log("add new done")
             else {
@@ -48,9 +48,9 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
         });
     }
     else {// req có id sẽ hiểu là đang update
-        Lession.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
+        GoodStudent.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
             if (!err) {
-                res.redirect('lession/list');
+                res.redirect('goodstudent/list');
             }
             else {
                 console.log('Error during record update:' + err);
@@ -59,12 +59,12 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
     }
 })
 router.get('/list', (req, res) => {//lấy toàn bộ employee
-    Lession.find((err, docs) => {//tìm toàn bộ 
+    GoodStudent.find((err, docs) => {//tìm toàn bộ 
         if (!err) {
             res.json(docs);
         }
         else {
-            console.log('Error in retrieving lession list :' + err);
+            console.log('Error in retrieving goodstudent list :' + err);
         };
     });
 });
@@ -81,23 +81,23 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
 
 router.get('/delete/:id', (req, res) => {
 
-    Lession.findByIdAndRemove(req.params.id, (err, doc) => {
+    GoodStudent.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            res.redirect('/lession/list');
+            res.redirect('/goodstudent/list');
         }
-        else { console.log('Error in lession delete:' + err); }
+        else { console.log('Error in goodstudent delete:' + err); }
     });
 });
 router.get('/:id', (req, res) => {
 
-    Lession.findById(req.params.id, (err, doc) => {
+    GoodStudent.findById(req.params.id, (err, doc) => {
         if (!err) {
             // res.render('lession/updatelession', {
             //     lession: doc
             // });
             res.json(doc);
         }
-        else { console.log('Error in lession update:' + err); }
+        else { console.log('Error in GoodStudent update:' + err); }
     });
 
 });

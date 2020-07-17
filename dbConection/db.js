@@ -4,6 +4,6 @@ const stringConection ="mongodb+srv://nlkids:nlkids@cluster0-gvkap.mongodb.net/<
 "mongodb://localhost:27017/NLkids"
 mongoose.connect(stringConection, 
 { useNewUrlParser: true,useUnifiedTopology: true,useFindAndModify: false }, (err) => {
-    if (!err) { console.log('MongoDB Connection Succeeded.') }
+    if (!err) { console.log('MongoDB Connection Succeeded.'); console.log("link db",stringConection); }
     else { console.log('Error in DB connection : ' + err) }
 });

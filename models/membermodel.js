@@ -25,7 +25,7 @@ var memberSchema = mongoose.Schema({
     memberAddress:{
         type:String
     },
-    memberClassId:{
+    avatarContentImg:{
         type:String
     },
 })

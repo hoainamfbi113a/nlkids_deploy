@@ -34,7 +34,7 @@ router.post('/',upload.single('selectedFile'), (req, res,next) => {
     if (req.body._id === ''|| req.body._id === undefined) {
         let news = new News();
         news.title = req.body.title;
-        console.log(req.file);
+        news.categoryNews = req.body.categoryNews;
         if(req.file){
         // news.images = req.file.path.split('/').slice(1).join('/');
         news.images = req.file.path.split('\\').slice(1).join('/');

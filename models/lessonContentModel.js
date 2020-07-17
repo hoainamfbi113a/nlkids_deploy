@@ -12,5 +12,18 @@ var lessionContentSchema = mongoose.Schema({
     lessionContentDetail:{
         type:String
     },
+    lessonType:{
+        type:Number,
+    },
+    classType:{
+        class:{
+            name:{
+                type:String
+            },
+            classId:{
+                type:Number
+            }
+        }
+    }
 })
 module.exports= mongoose.model('lessoncontent',lessionContentSchema);

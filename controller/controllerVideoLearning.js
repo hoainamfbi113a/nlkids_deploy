@@ -1,13 +1,13 @@
 const express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-var Lession = require('../models/lessonContentModel');
+var VideoLearning = require('../models/videomodel');
 var multer = require("multer");
-var upload = multer({ dest: './public/uploads' })
+var upload = multer({ dest: './public/uploads/goodstudent' })
 const path = require('path');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./public/uploads");
+        cb(null, "./public/uploads/goodstudent");
     },
     filename: (req, file, cb) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
@@ -26,31 +26,27 @@ var upload = multer({
     }
 });
 
-router.post('/',upload.single('lessionContentImg'), (req, res) => {
-    console.log("Voooooo");
+router.post('/', (req, res) => {
+    // console.log(req.body.videoContentVideo);
     if (req.body._id == '' || req.body._id === undefined) {
-        let lession = new Lession();
-        lession.lessionContentSubjects = req.body.lessionContentSubjects;
-        lession.lessionContentTitle = req.body.lessionContentTitle;
-        lession.lessionContentDetail = req.body.lessionContentDetail;
-        if (req.file) {
-            lession.lessionContentImg = req.file.path.split('/').slice(1).join('/');
-        }
-        else {
-            lession.lessionContentImg = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
-        }
-        lession.save((err, doc) => {
+        let videoLearning = new VideoLearning();
+        videoLearning.videoContentSubjects = req.body.videoContentSubjects;
+        videoLearning.videoContentTitle = req.body.videoContentTitle;
+        videoLearning.videoContentDetail = req.body.videoContentDetail;
+        videoLearning.videoContentVideo = req.body.videoContentDetail;
+        videoLearning.save((err, doc) => {
             if (!err)
-                console.log("add new done")
+                console.log("add video done")
             else {
                 console.log('Error during record insertion :' + err);
             }
         });
     }
     else {// req có id sẽ hiểu là đang update
-        Lession.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
+        // console.log("updating");
+        VideoLearning.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
             if (!err) {
-                res.redirect('lession/list');
+                res.json({ status: 200 });
             }
             else {
                 console.log('Error during record update:' + err);
@@ -59,12 +55,12 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
     }
 })
 router.get('/list', (req, res) => {//lấy toàn bộ employee
-    Lession.find((err, docs) => {//tìm toàn bộ 
+    VideoLearning.find((err, docs) => {//tìm toàn bộ 
         if (!err) {
             res.json(docs);
         }
         else {
-            console.log('Error in retrieving lession list :' + err);
+            console.log('Error in retrieving goodstudent list :' + err);
         };
     });
 });
@@ -81,23 +77,23 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
 
 router.get('/delete/:id', (req, res) => {
 
-    Lession.findByIdAndRemove(req.params.id, (err, doc) => {
+    VideoLearning.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            res.redirect('/lession/list');
+            res.json({ status: 200 });
         }
-        else { console.log('Error in lession delete:' + err); }
+        else { console.log('Error in goodstudent delete:' + err); }
     });
 });
 router.get('/:id', (req, res) => {
 
-    Lession.findById(req.params.id, (err, doc) => {
+    VideoLearning.findById(req.params.id, (err, doc) => {
         if (!err) {
             // res.render('lession/updatelession', {
             //     lession: doc
             // });
             res.json(doc);
         }
-        else { console.log('Error in lession update:' + err); }
+        else { console.log('Error in GoodStudent update:' + err); }
     });
 
 });
