@@ -36,7 +36,9 @@ router.post('/',upload.single('selectedFile'), (req, res,next) => {
         news.title = req.body.title;
         news.categoryNews = req.body.categoryNews;
         if(req.file){
-        news.images = req.file.path.split('/').slice(1).join('/');
+        // news.images = req.file.path.split('/').slice(1).join('/');
+        news.images = req.file.path.split('\\').slice(1).join('/');
+        
         }
         else{
             news.images = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
@@ -45,18 +47,21 @@ router.post('/',upload.single('selectedFile'), (req, res,next) => {
         news.timeUpdate = req.body.timeUpdate;
         // console.log(req.file.path.split('/').slice(1).join('/'));
         news.save((err, doc) => {
-            if (!err)
                 // res.redirect('news/list');
                 console.log("add new done")
-            else {
-                console.log('Error during record insertion :' + err);
-            }
-        });
+        })
     }
+    
+
+
+
+
     else {// req có id sẽ hiểu là đang update
         // news.title = req.body.title;
         if(req.file){
-            req.body.images = req.file.path.split('/').slice(1).join('/');
+            // req.body.images = req.file.path.split('/').slice(1).join('/');
+            req.body.images = req.file.path.split('\\').slice(1).join('/');
+
         }
         else{
             req.body.images = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"

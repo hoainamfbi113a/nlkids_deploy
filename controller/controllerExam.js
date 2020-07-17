@@ -199,6 +199,7 @@ function updateRecord(req, res) {//tiến hành update dư liệu
 router.get('/list', (req, res) => {//lấy toàn bộ exam
     Exam.find((err, docs) => {//tìm toàn bộ 
         if (!err) {
+            console.log("vao exam route");
              res.json(docs);
         }
         else {
