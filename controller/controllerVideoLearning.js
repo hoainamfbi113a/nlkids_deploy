@@ -97,6 +97,17 @@ router.get('/:id', (req, res) => {
     });
 
 });
+router.get('/list/:subject', (req, res) => {//lấy toàn bộ video
+    console.log('vao');
+    VideoLearning.find({classId:req.params.subject},(err, docs) => {//tìm toàn bộ 
+        if (!err) {
+             res.json(docs);
+        }
+        else {
+            console.log('Error in retrieving VideoLearning list :' + err);
+        }
+    });
+});
 
 
 module.exports = router;

@@ -68,16 +68,17 @@ router.get('/list', (req, res) => {//lấy toàn bộ employee
         };
     });
 });
-// router.get('/list:subjects', (req, res) => {//lấy toàn bộ employee
-//     Lession.find({ "lessionContentSubjects": "Toán lớp 2" }, (err, docs) => {//tìm toàn bộ 
-//         if (!err) {
-//             res.json(docs);
-//         }
-//         else {
-//             console.log('Error in retrieving lession list :' + err);
-//         };
-//     });
-// });
+router.get('/list/:subjects', (req, res) => {
+   console.log(req.params.subjects)
+    Lession.find({ "lessionContentSubjects": req.params.subjects }, (err, docs) => {//tìm toàn bộ 
+        if (!err) {
+            res.json(docs);
+        }
+        else {
+            console.log('Error in retrieving lession list :' + err);
+        };
+    });
+});
 
 router.get('/delete/:id', (req, res) => {
 
