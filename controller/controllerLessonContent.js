@@ -90,18 +90,13 @@ router.get('/delete/:id', (req, res) => {
     });
 });
 router.get('/:id', (req, res) => {
-
     Lession.findById(req.params.id, (err, doc) => {
         if (!err) {
-            // res.render('lession/updatelession', {
-            //     lession: doc
-            // });
             res.json(doc);
         }
         else { console.log('Error in lession update:' + err); }
     });
 
 });
-
 
 module.exports = router;
