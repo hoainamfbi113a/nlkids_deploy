@@ -89,5 +89,23 @@ router.get('/delete/:id', (req, res) => {//xóa forumQuestion
         else { console.log('Error in forumQuestion delete :' + err); }//có lỗi và xuất lỗi ra
     });
 });
+router.post('/ans/:id_question', (req, res) => {
+    console.log("id_question"+req.body.answer);
+    const answer = //nhận dữ liệu từ react gửi qua
+      {
+        memberName: req.body.memberName,
+        answer: req.body.answer,
+      }
+    forumQuestion.findOneAndUpdate(
+        { _id: req.params.id_question }, 
+        { $push: { memberForumReply: answer } },
+        function (error, success) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(success);
+            }
+        });
+});
 
 module.exports = router;
