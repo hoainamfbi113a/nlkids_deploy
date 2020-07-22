@@ -60,11 +60,13 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
 })
 router.get('/list', (req, res) => {//lấy toàn bộ employee
     Lession.find((err, docs) => {//tìm toàn bộ 
+        console.log(`Co chay hay khong ${docs}`)
+
         if (!err) {
             res.json(docs);
         }
         else {
-            console.log('Error in retrieving lession list :' + err);
+            console.log('Error in retrievinng lession list :' + err);
         };
     });
 });
