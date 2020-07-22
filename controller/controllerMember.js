@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
         member:[]
     });
 });
-router.post('/',upload.single('avatarContentImg'),upload.single('avatarContentImg2'), (req, res) => {
+router.post('/',upload.single('avatarContentImg'), (req, res) => {
 // router.post('/', (req, res) => {
     if (req.body._id === undefined||req.body._id === '')
         {
@@ -61,10 +61,11 @@ function insertRecord(req, res) {//thêm dữ liệu
         .then(member => {
           if (!member) {//Không trùng với bất kỳ memberLogin nào và tiến hành đăng ký
                 bcrypt.hash(req.body.memberPass, 10, (err, hash) => {//hash mật khẩu người dùng đăng ký
-                // userData.memberPass = hash;
+                userData.memberPass = hash;
+                console.log(hash+"pass");
                 let member = new Member();
                 member.memberLogin = req.body.memberLogin;
-                member.memberPass = req.body.memberPass;
+                // member.memberPass = req.body.memberPass;
                 member.memberCategory = '1';
                 member.memberName = req.body.memberName;
                 member.memberDate = req.body.memberDate;

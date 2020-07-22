@@ -11,6 +11,6 @@ router.get('/list', (req, res) => {//lấy toàn bộ Question
 				console.log('Error in retrieving Question list :' + err);
 			}
 		});
-	});
+});
 
 module.exports = router;
