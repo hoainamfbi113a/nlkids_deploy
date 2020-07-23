@@ -23,13 +23,10 @@ router.get('/list5', (req, res) => {//lấy toàn bộ employee
         };
     }).sort({points : -1}).limit(5);
 });
-router.get('/:id', (req, res) => {
-    Lesson.findById(req.params.id, (err, doc) => {
-        if (!err) {
-            res.json(doc);
-        }
-        else { console.log('Error in Lesson update:' + err); }
-    });
+router.get('/:id',async (req, res) => {//lấy toàn bộ employee
+   console.log("gia tri id: ",req.params.id);
+   let data= await Lesson.findById(req.params.id).exec();
 
+   if(data) return res.json(data);
 });
 module.exports = router;

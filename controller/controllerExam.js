@@ -1,6 +1,7 @@
 const express = require('express');
 var router = express.Router();
     var Exam = require('../models/exammodel');
+    var Lession = require('../models/lessonContentModel')
     var Question =require('../models/questionmodel');
     var Examcontent = require('../models/examcontenmodel');
 router.get('/', (req, res) => {
@@ -204,7 +205,6 @@ router.get('/list', (req, res) => {//lấy toàn bộ exam
 });
 
 router.get('/list/:subject', (req, res) => {//lấy toàn bộ exam
-    console.log('vao');
     Exam.find({classId:req.params.subject},(err, docs) => {//tìm toàn bộ 
         if (!err) {
              res.json(docs);
@@ -214,6 +214,16 @@ router.get('/list/:subject', (req, res) => {//lấy toàn bộ exam
         }
     });
 });
+// router.get('/list/:id', (req, res) => {//lấy toàn bộ exam
+//     Lession.find({classId:req.params.id},(err, docs) => {//tìm toàn bộ 
+//         if (!err) {
+//              res.json(docs);
+//         }
+//         else {
+//             console.log('Error in retrieving exam list :' + err);
+//         }
+//     });
+// });
 router.get('/:id', (req, res) => {//tìm id để tiến hành update
     Exam.findById(req.params.id, (err, doc) => {
         if (!err) {
