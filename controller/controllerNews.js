@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
     res.render("new/addOrEdit");
 
 });
-router.post('/',upload.single('selectedFile'), (req, res,next) => {
+router.post('/',upload.single('selectedFile'), async (req, res,next) => {
     console.log("ID: " + req.body._id)
     if (req.body._id === ''|| req.body._id === undefined) {
         let news = new News();
