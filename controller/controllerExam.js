@@ -227,8 +227,6 @@ router.get('/delete/:id', async (req, res) => {//xóa exam
   let examId = "";
   await Exam.findById(req.params.id, (err, doc) => {
         if (!err) {
-            //  res.json(doc);
-            // console.log(doc);
             examId = doc.examName
         }
        

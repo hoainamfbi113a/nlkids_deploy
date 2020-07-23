@@ -35,9 +35,10 @@ router.post('/',upload.single('selectedFile'), (req, res,next) => {
         let news = new News();
         news.title = req.body.title;
         news.categoryNews = req.body.categoryNews;
+        // console.log(req.file);
         if(req.file){
-        // news.images = req.file.path.split('/').slice(1).join('/');
-        news.images = req.file.path.split('\\').slice(1).join('/');
+        news.images = req.file.path.split('/').slice(1).join('/');
+        // news.images = req.file.path.split('\\').slice(1).join('/');
         
         }
         else{
@@ -51,21 +52,20 @@ router.post('/',upload.single('selectedFile'), (req, res,next) => {
                 console.log("add new done")
         })
     }
-    
-
-
-
-
     else {// req có id sẽ hiểu là đang update
         // news.title = req.body.title;
         if(req.file){
-            // req.body.images = req.file.path.split('/').slice(1).join('/');
-            req.body.images = req.file.path.split('\\').slice(1).join('/');
-
+            req.body.images = req.file.path.split('/').slice(1).join('/');
+            // req.body.images = req.file.path.split('\\').slice(1).join('/');
         }
-        else{
-            req.body.images = "uploads/1593760987298-screen-shot-2020-07-03-at-10.23.15.png"
-        }
+            else {
+                await  News.findById(req.body._id, (err, doc) => {
+                      if (!err) {//không có lỗi thì điền vào form dữ liệu update
+                      }
+                      console.log(doc.avatarContentImg);
+                      req.body.images = doc.images
+                  });
+              }
         News.findOneAndUpdate({ _id: req.body._id },req.body,{new:true},(err,doc)=>{
             if (!err) 
             {

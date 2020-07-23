@@ -23,4 +23,13 @@ router.get('/list5', (req, res) => {//lấy toàn bộ employee
         };
     }).sort({points : -1}).limit(5);
 });
+router.get('/:id', (req, res) => {
+    Lesson.findById(req.params.id, (err, doc) => {
+        if (!err) {
+            res.json(doc);
+        }
+        else { console.log('Error in Lesson update:' + err); }
+    });
+
+});
 module.exports = router;

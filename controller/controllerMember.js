@@ -52,9 +52,7 @@ function insertRecord(req, res) {//thêm dữ liệu
         memberDate : req.body.memberDate,
         memberSex : req.body.memberSex,
         memberAddress : req.body.memberAddress,
-
       }
-      // console.log(req.body.memberLogin+"aaaaa");
       Member.findOne({//Kiểm tra memberLogin người dùng đăng ký đã tồn tại hay không
         memberLogin: req.body.memberLogin
       })
@@ -65,7 +63,7 @@ function insertRecord(req, res) {//thêm dữ liệu
                 console.log(hash+"pass");
                 let member = new Member();
                 member.memberLogin = req.body.memberLogin;
-                // member.memberPass = req.body.memberPass;
+                member.memberPass = hash;
                 member.memberCategory = '1';
                 member.memberName = req.body.memberName;
                 member.memberDate = req.body.memberDate;
@@ -86,13 +84,6 @@ function insertRecord(req, res) {//thêm dữ liệu
                     console.log('Error during record insertion :' + err);
                 }
             });
-              // Member.create(userData)//tiến hành tạo tài khoản 
-              //   .then(Member => {
-              //     res.json({ status: Member.memberLogin + 'Registered!' })//trả lại cho reactjs nếu đăng ký thành công
-              //   })
-              //   .catch(err => {
-              //     res.send('error: ' + err)//trả ra lỗi
-              //   })
             })
           } else {
             res.send('User already exists')//xuất ra lỗi nếu memberLogin đã tồn tại
@@ -103,8 +94,20 @@ function insertRecord(req, res) {//thêm dữ liệu
         }) 
 }
 
-function updateRecord(req, res) {//tiến hành update dư liệu
-  
+async function  updateRecord  (req, res) {//tiến hành update dư liệu
+    if (req.file) {
+        console.log(req.file.path.split('/').slice(1).join('/'));
+        req.body.avatarContentImg = req.file.path.split('/').slice(1).join('/');
+    }
+    else {
+      await  Member.findById(req.body._id, (err, doc) => {
+            if (!err) {//không có lỗi thì điền vào form dữ liệu update
+            }
+            console.log(doc.avatarContentImg);
+            req.body.avatarContentImg = doc.avatarContentImg
+        });
+
+    }
     Member.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {//tìm user 
         //trùng với ID và update
         if (!err) { res.redirect('/admin/member/list'); }//tìm thấy và tiến hành update
@@ -131,10 +134,6 @@ router.get('/list', (req, res) => {//lấy toàn bộ Member
 router.get('/:id', (req, res) => {//tìm id để tiến hành update
     Member.findById(req.params.id, (err, doc) => {
         if (!err) {//không có lỗi thì điền vào form dữ liệu update
-            // res.render("member/addOrEdit", {
-            //     viewTitle: "Update Member",
-            //     member: doc
-            // });
         }
         res.json(doc);
     });
