@@ -47,9 +47,10 @@ router.post('/', upload.fields([{
         games.categoryvocabulary = req.body.categoryvocabulary;
         games.vocabularygame = req.body.vocabularygame;
         games.spellingvocabulary = req.body.spellingvocabulary;
-        games.meaningA = req.body.meaningA;
-        games.meaningB = req.body.meaningB;
-        games.meaningC = req.body.meaningC;
+        games.questionResultA.meaningA = req.body.meaningA;
+        console.log(req.body.meaningA+"meningA")
+        games.questionResultB.meaningB = req.body.meaningB;
+        games.questionResultC.meaningC = req.body.meaningC;
         games.questionResultRight = req.body.questionResultRight;
 
         if (req.files['imgQuestionA']) {
@@ -101,6 +102,18 @@ router.post('/', upload.fields([{
 router.get('/list', (req, res) => { //lấy toàn bộ employee
     Games.find((err, docs) => { //tìm toàn bộ 
         if (!err) {
+            res.json(docs);
+        } else {
+            console.log('Error in retrieving Games list :' + err);
+        };
+    });
+});
+router.get('/list/:subject', (req, res) => { //lấy toàn bộ employee
+    console.log("xin chao"+req.params.subject);
+
+    Games.find({ "categoryvocabulary": req.params.subject},(err, docs) => { //tìm toàn bộ 
+        if (!err) {
+            console.log(docs);
             res.json(docs);
         } else {
             console.log('Error in retrieving Games list :' + err);

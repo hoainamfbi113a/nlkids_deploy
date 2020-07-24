@@ -60,7 +60,7 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
 })
 router.get('/list', (req, res) => {//lấy toàn bộ employee
     Lession.find((err, docs) => {//tìm toàn bộ 
-        console.log(`Co chay hay khong ${docs}`)
+        // console.log(`Co chay hay khong ${docs}`)
 
         if (!err) {
             res.json(docs);
