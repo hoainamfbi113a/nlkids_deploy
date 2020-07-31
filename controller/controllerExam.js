@@ -40,7 +40,7 @@ function insertRecord(req, res) {//thêm dữ liệu
     });   
    
 }
- function insertdethidetail(req, res) {//thêm dữ liệu
+async function insertdethidetail(req, res) {//thêm dữ liệu
         var Toan1=[];
         var Toan2=[];
         var Toan3=[];
@@ -56,39 +56,39 @@ function insertRecord(req, res) {//thêm dữ liệu
       //  var SoCauKho= req.body.examDifficultNumber; 
         // var SoCauKho= 10 - (SoCauDe+SoCauTB);
         console.log("dddd");
-        Question.find((err, docs) => {//tìm toàn bộ
+      await Question.find(async(err, docs) => {//tìm toàn bộ
             if (!err) {
             for(var i=0; i<docs.length;i++)
             {
                 if(docs[i].questionCategoryId=='Toán lớp 1'){
-                    Toan1.push(docs[i]);
+                   await Toan1.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Toán lớp 2'){
-                    Toan2.push(docs[i]);
+                    await Toan2.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Toán lớp 3'){
-                    Toan3.push(docs[i]);
+                    await Toan3.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Toán lớp 4'){
-                    Toan4.push(docs[i]);
+                    await Toan4.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Toán lớp 5'){
-                    Toan5.push(docs[i]);
+                    await Toan5.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Anh văn 1'){
-                    AnhVan1.push(docs[i]);
+                    await AnhVan1.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Anh văn 2'){
-                    AnhVan2.push(docs[i]);
+                    await AnhVan2.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Anh văn 3'){
-                    AnhVan3.push(docs[i]);
+                    await  AnhVan3.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Anh văn 4'){
-                    AnhVan4.push(docs[i]);
+                    await AnhVan4.push(docs[i]);
                 }
                 else if(docs[i].questionCategoryId=='Anh văn 5'){
-                    AnhVan5.push(docs[i]);
+                    await AnhVan5.push(docs[i]);
                 }
                 
             }
@@ -97,9 +97,7 @@ function insertRecord(req, res) {//thêm dữ liệu
             console.log('Error in retrieving Question list :' + err);
         }
         });
-        console.log("1");
-        function a(){
-            console.log("Xin chao");
+            // console.log(Toan1);
             for(var i=0 ; i<SoCauDe;i++){
                 // console.log(Toan1[Math.floor(Math.random()*Toan1.length)]);
                 if(req.body.classId=='Toán lớp 1')
@@ -143,8 +141,6 @@ function insertRecord(req, res) {//thêm dữ liệu
                     insertExamContent(AnhVan5,req.body.examName)
                 }
         }
-    }
-        setTimeout(a,600);
 }
 insertExamContent = (subject,examName) =>{
     var item = subject[Math.floor(Math.random()*subject.length)];
