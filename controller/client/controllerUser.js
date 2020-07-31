@@ -56,7 +56,8 @@ users.post('/login', (req, res) => {
           const payload = {//luu vao payload de gui token
             _id: user._id,
             memberClassId: user.memberClassId,
-            memberLogin: user.memberLogin
+            memberLogin: user.memberLogin,
+            avatarContentImg: user.avatarContentImg
           }
           let token = jwt.sign(payload, process.env.SECRET_KEY, {//dang ky token user
             expiresIn: '1h'//thoi gian ton tai token
@@ -110,7 +111,6 @@ users.post('/loginadmin', (req, res) => {
 
 users.get('/profile', (req, res) => {
   var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)//dung de xac minh
-  
   User.findOne({
     _id: decoded._id
   })
@@ -126,9 +126,9 @@ users.get('/profile', (req, res) => {
       res.send('error: ' + err)
     })
 })
-users.post('/loginfacebook', (req, res) => {
+users.post('/loginfacebook',  (req, res) => {
   const today = new Date()
-  console.log(req.body.memberPass);
+  console.log(req.body.memberLogin);
   const userData = //nhận dữ liệu từ react gửi qua
   {
     memberLogin: req.body.memberLogin,
@@ -137,57 +137,66 @@ users.post('/loginfacebook', (req, res) => {
     memberCategory:'1',
     created: today
   }
-  User.findOne({//Kiểm tra memberLogin người dùng đăng ký đã tồn tại hay không
-    memberLogin: req.body.memberLogin
-  })
-    .then(user => {
-      if (!user) {//Không trùng với bất kỳ memberLogin nào và tiến hành đăng ký
-        bcrypt.hash(req.body.memberPass, 10, (err, hash) => {//hash mật khẩu người dùng đăng ký
-          userData.memberPass = hash
-          User.create(userData)//tiến hành tạo tài khoản 
-            .then(user => {
-              res.json({ status: user.memberLogin + 'Registered!' })//trả lại cho reactjs nếu đăng ký thành công
-            })
-            .catch(err => {
-              res.send('error: ' + err)//trả ra lỗi
-            })
-        })
-        
-
-      } else {
-        User.findOne({
-          memberLogin: req.body.memberLogin
-        })
-          .then(user => {
-            if (user) {
-              if (bcrypt.compareSync(req.body.memberPass, user.memberPass)&&user.memberCategory==="1") {//so sanh mat khau da hash
-                const payload = {//luu vao payload de gui token
-                  _id: user._id,
-                  memberClassId: user.memberClassId,
-                  memberLogin: user.memberLogin
-                }
-                let token = jwt.sign(payload, process.env.SECRET_KEY, {//dang ky token user
-                  expiresIn: '1h'//thoi gian ton tai token
+  User.findOne({memberLogin: req.body.memberLogin}, (err,doc)=>{
+            if (!doc) {
+              console.log("1");
+              //Không trùng với bất kỳ memberLogin nào và tiến hành đăng ký
+              bcrypt.hash(req.body.memberPass, 10, async (err, hash) => {//hash mật khẩu người dùng đăng ký
+                userData.memberPass = hash
+              await User.create(userData)//tiến hành tạo tài khoản 
+              })
+              setTimeout(()=>{
+                User.findOne({memberLogin: req.body.memberLogin},(err,doc)=>{
+                  console.log(doc);
+                    if(doc){
+                          if (bcrypt.compareSync(req.body.memberPass, doc.memberPass)&&doc.memberCategory==="1") { //so sanh mat khau da hash
+                        const payload = {  //luu vao payload de gui token
+                          _id: doc._id,
+                          memberClassId: doc.memberClassId,
+                          memberLogin: doc.memberLogin
+                        }
+                        let token = jwt.sign(payload, process.env.SECRET_KEY, {//dang ky token doc
+                          expiresIn: '1h'//thoi gian ton tai token
+                        })
+                        res.send(token)
+                      } else {
+                        res.send('doc not exists and pass')
+                      }
+                    }
                 })
-                res.send(token)
-             //   console.log('exist');
-              } else {
-                // memberPasss don't match
-                res.send('User not exists')
-              }
-            } else {
-              res.send('User not exists')
+              },200)
+             
             }
-          })
-          .catch(err => {
-            res.send(err)
-          })
-        
-      }
+            else{
+              console.log("2");
+              User.findOne({
+                memberLogin: req.body.memberLogin
+              })
+                .then(user => {
+                  if (user) {
+                    if (bcrypt.compareSync(req.body.memberPass, user.memberPass)&&user.memberCategory==="1") { //so sanh mat khau da hash
+                      const payload = {  //luu vao payload de gui token
+                        _id: user._id,
+                        memberClassId: user.memberClassId,
+                        memberLogin: user.memberLogin
+                      }
+                      let token = jwt.sign(payload, process.env.SECRET_KEY, {//dang ky token user
+                        expiresIn: '1h'//thoi gian ton tai token
+                      })
+                      res.send(token)
+                    } else {
+                      res.send('User not exists and pass')
+                    }
+                  } else {
+                    res.send('User not exists ')
+                  }
+                })
+                .catch(err => {
+                  res.send(err)
+                })
+            }
     })
-    .catch(err => {
-      res.send('error: ' + err)
-    })
+    
 })
 
 module.exports = users

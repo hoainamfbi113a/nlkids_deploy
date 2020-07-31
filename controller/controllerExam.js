@@ -54,10 +54,10 @@ function insertRecord(req, res) {//thêm dữ liệu
         var SoCauDe= 10;
         // var SoCauTB= req.body.examMediumNumber;
       //  var SoCauKho= req.body.examDifficultNumber; 
-        // var SoCauKho= 10 - (SoCauDe+SoCauTB); 
+        // var SoCauKho= 10 - (SoCauDe+SoCauTB);
+        console.log("dddd");
         Question.find((err, docs) => {//tìm toàn bộ
             if (!err) {
-                //console.log(docs);
             for(var i=0; i<docs.length;i++)
             {
                 if(docs[i].questionCategoryId=='Toán lớp 1'){
@@ -97,71 +97,56 @@ function insertRecord(req, res) {//thêm dữ liệu
             console.log('Error in retrieving Question list :' + err);
         }
         });
+        console.log("1");
         function a(){
+            console.log("Xin chao");
             for(var i=0 ; i<SoCauDe;i++){
                 // console.log(Toan1[Math.floor(Math.random()*Toan1.length)]);
                 if(req.body.classId=='Toán lớp 1')
                 {
-                    // var item = Toan1[Math.floor(Math.random()*Toan1.length)];
-                    // var examcontent = new Examcontent();//tạo một exam 
-                    // examcontent.questionName = item.questionName;
-                    // examcontent.questionResultA = item.questionResultA;
-                    // examcontent.questionResultB = item.questionResultB;
-                    // examcontent.questionResultC = item.questionResultC;
-                    // examcontent.questionResultD = item.questionResultD;
-                    // examcontent.questionResultRight = item.questionResultRight;
-                    // examcontent.examId = req.body.examName;
-                    // examcontent.save((err, doc) => {//thêm dữ liệu vào database
-                    //         if (!err)//nếu thành công
-                    //             // res.redirect('exam/list');
-                    //             console.log('them thanh cong2');
-                    //         else {//nếu lỗi
-                    //                 console.log('Error during record insertion : ' + err);
-                    //         }
-                    //     });
-                    insertExamContent(Toan1)
+                    insertExamContent(Toan1,req.body.examName)
                 }
                 else if(req.body.classId=='Toán lớp 2')
                 {
-                    insertExamContent(Toan2)
+                    insertExamContent(Toan2,req.body.examName)
                 }
                 else if(req.body.classId=='Toán lớp 3')
                 {
-                    insertExamContent(Toan3)
+                    insertExamContent(Toan3,req.body.examName)
                 }
                 else if(req.body.classId=='Toán lớp 4')
                 {
-                    insertExamContent(Toan4)
+                    insertExamContent(Toan4,req.body.examName)
                 }
                 else if(req.body.classId=='Toán lớp 5')
                 {
-                    insertExamContent(Toan5)
+                    insertExamContent(Toan5,req.body.examName)
                 }
                 else if(req.body.classId=='Anh văn 1')
                 {
-                    insertExamContent(Anh1)
+                    insertExamContent(AnhVan1,req.body.examName)
                 }
                 else if(req.body.classId=='Anh văn 2')
                 {
-                    insertExamContent(Anh2)
+                    insertExamContent(AnhVan2,req.body.examName)
                 }
                 else if(req.body.classId=='Anh văn 3')
                 {
-                    insertExamContent(Anh3)
+                    insertExamContent(AnhVan3,req.body.examName)
                 }
                 else if(req.body.classId=='Anh văn 4')
                 {
-                    insertExamContent(Anh4)
+                    insertExamContent(AnhVan4,req.body.examName)
                 }
                 else if(req.body.classId=='Anh văn 5')
                 {
-                    insertExamContent(Anh5)
+                    insertExamContent(AnhVan5,req.body.examName)
                 }
         }
-        setTimeout(a,3000);
+    }
+        setTimeout(a,600);
 }
-}
-insertExamContent = (subject) =>{
+insertExamContent = (subject,examName) =>{
     var item = subject[Math.floor(Math.random()*subject.length)];
                     var examcontent = new Examcontent();//tạo một exam 
                     examcontent.questionName = item.questionName;
@@ -170,7 +155,7 @@ insertExamContent = (subject) =>{
                     examcontent.questionResultC = item.questionResultC;
                     examcontent.questionResultD = item.questionResultD;
                     examcontent.questionResultRight = item.questionResultRight;
-                    examcontent.examId = req.body.examName;
+                    examcontent.examId = examName;
                     examcontent.save((err, doc) => {//thêm dữ liệu vào database
                             if (!err)//nếu thành công
                                 // res.redirect('exam/list');

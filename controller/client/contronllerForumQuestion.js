@@ -16,18 +16,13 @@ router.post('/', (req, res) => {
 });
 function insertRecord(req, res) {//thêm dữ liệu
     var forumquestion = new forumQuestion();//tạo một forumQuestion mới
-    console.log(req.body.titleForumQuestion+"forum");
-    console.log(req.body.memberForumQuestionMemberName+"name");
+    // console.log(req.body.titleForumQuestion+"forum");
+    console.log(req.body.memberForumQuestionAvatarContentImg+"name");
     forumquestion.titleForumQuestion = req.body.titleForumQuestion;
     
     forumquestion.classForumQuestion = req.body.classForumQuestion;
-    forumquestion.memberForumQuestion.avatarContentImg = req.body.avatarContentImg;
+    forumquestion.memberForumQuestion.avatarContentImg = req.body.memberForumQuestionAvatarContentImg;
     forumquestion.memberForumQuestion.memberName = req.body.memberForumQuestionMemberName;
-    // forumquestion.forumquestionResultA = req.body.forumquestionResultA;
-    // forumquestion.forumquestionResultB = req.body.forumquestionResultB;
-    // forumquestion.forumquestionResultC = req.body.forumquestionResultC;
-    // forumquestion.forumquestionResultD = req.body.forumquestionResultD;
-    // forumquestion.forumquestionResultRight = req.body.forumquestionResultRight;
     forumquestion.save((err, doc) => {//thêm dữ liệu vào database
         if (!err)//nếu thành công
             // res.redirect('forumQuestion/list');
@@ -95,6 +90,7 @@ router.post('/ans/:id_question', (req, res) => {
       {
         memberName: req.body.memberName,
         answer: req.body.answer,
+        avatarContentImg: req.body.avatarContentImg
       }
     forumQuestion.findOneAndUpdate(
         { _id: req.params.id_question }, 

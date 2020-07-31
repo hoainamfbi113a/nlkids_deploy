@@ -20,7 +20,7 @@ router.get('/list', (req, res) => {//lấy toàn bộ Question
 				docs.sort((a, b) => parseFloat(b.socaudung) - parseFloat(a.socaudung));
 				
 				const uniqueAges = [...new Set( docs.map(obj => obj.memberid)) ];
-				console.log(uniqueAges);
+				// console.log(uniqueAges);
 				res.json(uniqueAges);
 			}
 			else {

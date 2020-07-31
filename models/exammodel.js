@@ -23,5 +23,6 @@ var examSchema = mongoose.Schema({
     examCategoryNumber:{
         type:String
     },
+    created: { type: Date, default: Date.now }
 })
 module.exports= mongoose.model('Exam',examSchema);

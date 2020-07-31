@@ -86,7 +86,7 @@ router.get('/delete/:id', (req, res) => {
 
     Lession.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            res.redirect('/lession/list');
+            res.json({ status: 200 });
         }
         else { console.log('Error in lession delete:' + err); }
     });

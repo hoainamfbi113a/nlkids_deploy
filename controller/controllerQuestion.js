@@ -1,8 +1,8 @@
 const express = require('express');
 var router = express.Router();
-    var Question = require('../models/questionmodel'); 
-    var Examcontent = require('../models/examcontenmodel');
-
+var Question = require('../models/questionmodel'); 
+var Examcontent = require('../models/examcontenmodel');
+var Exam = require('../models/exammodel');
 router.get('/', (req, res) => {
     res.render("question/addOrEdit", {
         question:[]
@@ -56,11 +56,19 @@ router.get('/list', (req, res) => {//lấy toàn bộ Question
         }
     });
 });
-router.get('/list/:id', (req, res) => {//lấy toàn bộ Question
+router.get('/list/:id', async (req, res) => {//lấy toàn bộ Question
     console.log(req.params.id);
+    let timeEnd = ""
+    await Exam.findOne({examName:req.params.id},(err,doc)=>{
+        console.log(doc);
+        if(!err){
+            timeEnd = doc.examTimeMake
+        }
+    })
     Examcontent.find({examId:req.params.id},(err, docs) => {//tìm toàn bộ 
         if (!err) {
-            res.json(docs);
+            res.json({question:docs
+                    ,timeEnd:timeEnd});
            // console.log(docs);
         }
         else {

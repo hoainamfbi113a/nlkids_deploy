@@ -79,7 +79,7 @@ function insertRecord(req, res) {//thêm dữ liệu
             console.log(member.avatarContentImg);
             member.save((err, doc) => {
                 if (!err)
-                    console.log("add member done")
+                    res.json({ status: 201 });
                 else {
                     console.log('Error during record insertion :' + err);
                 }
