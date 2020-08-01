@@ -25,5 +25,6 @@ var examContentSchema = mongoose.Schema({
     examId:{
         type:String
     },
+    created: { type: Date, default: Date.now }
 })
 module.exports= mongoose.model('Examcontent',examContentSchema);

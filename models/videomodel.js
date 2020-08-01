@@ -12,5 +12,6 @@ var videoContentSchema = mongoose.Schema({
     videoContentDetail:{
         type:String
     },
+    created: { type: Date, default: Date.now }
 })
 module.exports= mongoose.model('videolearning',videoContentSchema);

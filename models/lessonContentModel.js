@@ -24,6 +24,7 @@ var lessionContentSchema = mongoose.Schema({
                 type:Number
             }
         }
-    }
+    },
+    created: { type: Date, default: Date.now }
 })
 module.exports= mongoose.model('lessoncontent',lessionContentSchema);

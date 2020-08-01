@@ -15,5 +15,6 @@ var newsSchema = mongoose.Schema({
     timeUpdate:{
         type:String
     },
+    created: { type: Date, default: Date.now }
 })
 module.exports= mongoose.model('News',newsSchema);

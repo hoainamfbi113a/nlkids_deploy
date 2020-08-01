@@ -11,5 +11,6 @@ var goodStudentSchema = mongoose.Schema({
     images:{
         type:String
     },
+    created: { type: Date, default: Date.now }
 })
 module.exports= mongoose.model('goodStudent',goodStudentSchema);

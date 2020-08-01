@@ -28,5 +28,6 @@ var memberSchema = mongoose.Schema({
     avatarContentImg:{
         type:String
     },
+    created: { type: Date, default: Date.now }
 })
 module.exports= mongoose.model('Member',memberSchema);

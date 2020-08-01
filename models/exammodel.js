@@ -1,14 +1,6 @@
 var mongoose = require('mongoose');
 var examSchema = mongoose.Schema({
-   
     examEasyNumber:{
-        type:String
-    },
-    examMediumNumber:{
-        type:String
-    },
-    
-    examDifficultNumber:{
         type:String
     },
     examName:{

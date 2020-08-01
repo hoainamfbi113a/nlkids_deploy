@@ -97,9 +97,7 @@ async function insertdethidetail(req, res) {//thêm dữ liệu
             console.log('Error in retrieving Question list :' + err);
         }
         });
-            // console.log(Toan1);
             for(var i=0 ; i<SoCauDe;i++){
-                // console.log(Toan1[Math.floor(Math.random()*Toan1.length)]);
                 if(req.body.classId=='Toán lớp 1')
                 {
                     insertExamContent(Toan1,req.body.examName)
