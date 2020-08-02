@@ -1,9 +1,5 @@
 var mongoose = require('mongoose');
 var gameSchema = mongoose.Schema({
-    membergame:{
-        avatarContentImg:String,
-        memberName:String
-    },
     categoryvocabulary:{
         type:String
     },

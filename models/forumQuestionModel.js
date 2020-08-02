@@ -1,8 +1,5 @@
 var mongoose = require('mongoose');
 var forumQuestionSchema = mongoose.Schema({
-    nameForumQuestion:{
-        type:String
-    },
     classForumQuestion:{
         type:String
     },

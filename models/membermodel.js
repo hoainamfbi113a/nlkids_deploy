@@ -3,9 +3,6 @@ var memberSchema = mongoose.Schema({
     memberCategory:{
         type:String
     },
-    memberId:{
-        type:String
-    },
     memberLogin:{
         type:String
     },
