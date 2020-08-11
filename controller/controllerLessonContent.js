@@ -26,7 +26,7 @@ var upload = multer({
     }
 });
 
-router.post('/',upload.single('lessionContentImg'), (req, res) => {
+router.post('/',upload.single('lessionContentImg'),async (req, res) => {
     console.log("Voooooo");
     if (req.body._id == '' || req.body._id === undefined) {
         let lession = new Lession();
@@ -48,6 +48,18 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
         });
     }
     else {// req có id sẽ hiểu là đang update
+        if(req.file){
+            req.body.lessionContentImg = req.file.path.split('/').slice(1).join('/');
+            // req.body.lessionContentImg = req.file.path.split('\\').slice(1).join('/');
+        }
+            else {
+                await  News.findById(req.body._id, (err, doc) => {
+                      if (!err) {//không có lỗi thì điền vào form dữ liệu update
+                      }
+                    //   console.log(doc.avatarContentImg);
+                      req.body.lessionContentImg = doc.lessionContentImg
+                  });
+              }
         Lession.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
             if (!err) {
                 res.redirect('lession/list');
@@ -61,7 +73,6 @@ router.post('/',upload.single('lessionContentImg'), (req, res) => {
 router.get('/list', (req, res) => {//lấy toàn bộ employee
     Lession.find((err, docs) => {//tìm toàn bộ 
         // console.log(`Co chay hay khong ${docs}`)
-
         if (!err) {
             res.json(docs);
         }

@@ -99,7 +99,8 @@ router.get('/:id', (req, res) => {
 });
 router.get('/list/:subject', (req, res) => {//lấy toàn bộ video
     console.log('vao');
-    VideoLearning.find({classId:req.params.subject},(err, docs) => {//tìm toàn bộ 
+    console.log(req.params.subject)
+    VideoLearning.find({videoContentSubjects:req.params.subject},(err, docs) => {//tìm toàn bộ 
         if (!err) {
              res.json(docs);
         }

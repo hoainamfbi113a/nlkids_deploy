@@ -1,9 +1,79 @@
 const express = require('express');
 var router = express.Router();
-    var Exam = require('../models/exammodel');
-    var Lession = require('../models/lessonContentModel')
-    var Question =require('../models/questionmodel');
-    var Examcontent = require('../models/examcontenmodel');
+var Exam = require('../models/exammodel');
+var Lession = require('../models/lessonContentModel')
+var Question =require('../models/questionmodel');
+var Examcontent = require('../models/examcontenmodel');
+var multer = require("multer");
+var upload = multer({ dest: './public/uploads' })
+const path = require('path');
+const excelToJson = require('convert-excel-to-json');
+const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, "./public/uploads");
+        },
+        filename: (req, file, cb) => {
+            const fileName = file.originalname.toLowerCase().split(' ').join('-');
+            cb(null, Date.now() + '-' + fileName)
+        }
+    });
+var upload = multer({
+        storage: storage,
+        fileFilter: (req, file, cb) => {
+            // if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            //     cb(null, true);
+            // } else {
+            //     cb(null, false);
+            //     return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+            // }
+            cb(null, true);
+        }
+});
+router.post('/excel',upload.single('file'),(req,res)=>{
+    var exam = new Exam();//tạo một exam mới
+    exam.examName = req.body.examName;
+    exam.examTimeMake = req.body.examTimeMake;
+    exam.classId = req.body.classId;
+    exam.save((err, doc) => {//thêm dữ liệu vào database
+        if (!err){//nếu thành công
+        }
+        else {//nếu lỗi
+                console.log('Error during record insertion : ' + err);
+        }
+    });   
+    console.log("them file excel");
+    const input= req.file.path;
+    const result = excelToJson({
+        sourceFile: input,
+        columnToKey: {
+            A: 'questionName',
+            B: 'questionResultA',
+            C: 'questionResultB',
+            D: 'questionResultC',
+            E: 'questionResultD',
+            F: 'questionResultRight'
+        }
+    });
+    // console.log(result);
+    let arrQuestion = result.Sheet1;
+    for(let i=0 ; i< arrQuestion.length;i++){
+        var examcontent = new Examcontent();
+        examcontent.examId = req.body.examName;
+        examcontent.questionName = arrQuestion[i].questionName;
+        examcontent.questionResultA = arrQuestion[i].questionResultA;
+        examcontent.questionResultB = arrQuestion[i].questionResultB;
+        examcontent.questionResultC = arrQuestion[i].questionResultC;
+        examcontent.questionResultD = arrQuestion[i].questionResultD;
+        examcontent.questionResultRight = arrQuestion[i].questionResultRight;
+        examcontent.save((err, doc) => {//thêm dữ liệu vào database
+            if (!err)//nếu thành công
+                console.log('them thanh cong2');
+            else {//nếu lỗi
+                    console.log('Error during record insertion : ' + err);
+            }
+        });
+    }
+})
 router.get('/', (req, res) => {
     res.render("exam/addOrEdit", {
         exam:[]
@@ -21,10 +91,6 @@ function insertRecord(req, res) {//thêm dữ liệu
   //  insertdethidetail(req,res)
     var exam = new Exam();//tạo một exam mới
     exam.examName = req.body.examName;
-    // console.log(req.body.examName);
-    // exam.examEasyNumber = req.body.examEasyNumber;
-    // exam.examMediumNumber = req.body.examMediumNumber;
-    // exam.examDifficultNumber = req.body.examDifficultNumber;
     exam.examTimeMake = req.body.examTimeMake;
     exam.classId = req.body.classId;
     exam.examCategoryNumber = req.body.examCategoryNumber;
@@ -193,16 +259,6 @@ router.get('/list/:subject', (req, res) => {//lấy toàn bộ exam
         }
     });
 });
-// router.get('/list/:id', (req, res) => {//lấy toàn bộ exam
-//     Lession.find({classId:req.params.id},(err, docs) => {//tìm toàn bộ 
-//         if (!err) {
-//              res.json(docs);
-//         }
-//         else {
-//             console.log('Error in retrieving exam list :' + err);
-//         }
-//     });
-// });
 router.get('/:id', (req, res) => {//tìm id để tiến hành update
     Exam.findById(req.params.id, (err, doc) => {
         if (!err) {

@@ -1,12 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt')//dùng để hash function
 var router = express.Router();
-    const mongoose = require('mongoose');
-    var Member = require('../models/membermodel'); 
-    var multer = require("multer");
-    var upload = multer({ dest: './public/uploads' })
-    const path = require('path');
-    const storage = multer.diskStorage({
+var Member = require('../models/membermodel'); 
+var multer = require("multer");
+var upload = multer({ dest: './public/uploads' })
+const path = require('path');
+const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb(null, "./public/uploads");
         },
@@ -15,7 +14,7 @@ var router = express.Router();
             cb(null, Date.now() + '-' + fileName)
         }
     });
-    var upload = multer({
+var upload = multer({
         storage: storage,
         fileFilter: (req, file, cb) => {
             if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
@@ -25,8 +24,7 @@ var router = express.Router();
                 return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
             }
         }
-    });
-    
+    });  
 router.get('/', (req, res) => {
     res.render("member/addOrEdit", {
         member:[]

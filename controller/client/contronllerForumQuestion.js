@@ -45,14 +45,16 @@ function updateRecord(req, res) {//tiến hành update dư liệu
 
 
 router.get('/list', (req, res) => {//lấy toàn bộ forumQuestion
-    forumQuestion.find((err, docs) => {//tìm toàn bộ 
+    // console.log("forum question")
+    forumQuestion.find((err, docs) => {//tìm toàn bộ
+        
         if (!err) {
             res.json(docs);
         }
         else {
             console.log('Error in retrieving forumQuestion list :' + err);
         }
-    });
+    }).sort({created : -1});
 });
 router.get('/list/:id', (req, res) => {//lấy toàn bộ forumQuestion
     console.log(req.params.id);
@@ -79,7 +81,9 @@ router.get('/:id', (req, res) => {//tìm id để tiến hành update
 router.get('/delete/:id', (req, res) => {//xóa forumQuestion
     forumQuestion.findByIdAndRemove(req.params.id, (err, doc) => {//tìm và xóa dữ liệu
         if (!err) {//không có lỗi khi tìm và tìm thấy
-            res.redirect('/admin/forumquestion/list');
+            res.json({
+                status: 200
+            });
         }
         else { console.log('Error in forumQuestion delete :' + err); }//có lỗi và xuất lỗi ra
     });
