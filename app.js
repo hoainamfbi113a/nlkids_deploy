@@ -25,12 +25,12 @@ var forumQuestionControllerClient = require("./controller/client/contronllerForu
 var app = express();
 var port = process.env.PORT || 5000
 app.use(cors())
-app.use(express.static(path.join(__dirname, 'build')));
+// app.use(express.static(path.join(__dirname, 'build')));
 
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 app.listen(port);
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname, '/views/'));
@@ -39,7 +39,6 @@ app.use(body_parser.urlencoded({
   extended:false
 }));
 app.use(body_parser.json());
-
 app.use('/employee',employeeController);
 app.use('/admin/member',memberController);
 app.use('/admin/question',questionController);
