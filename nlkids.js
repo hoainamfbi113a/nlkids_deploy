@@ -23,9 +23,14 @@ var lessonControllerClient = require("./controller/client/controllerLesson")
 var forumQuestionControllerClient = require("./controller/client/contronllerForumQuestion")
 
 var app = express();
-// console.log(process.env.PORT);
 var port = process.env.PORT || 5000
 app.use(cors())
+app.use(express.static(path.join(__dirname, 'build')));
+
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 app.listen(port);
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname, '/views/'));
